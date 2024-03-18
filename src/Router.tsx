@@ -15,20 +15,23 @@ const LinkContainer = styled.div`
   z-index: 999;
 `;
 
+
+
 function Router(){
+
     return (
         <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Coins/>}/>
+            <Route path="/" element={<Coins />}/>
             <Route path="/:coinId" element={<Coin/>}>
                 <Route path="price" element={<Price/>}/>
                 <Route path="chart" element={<Chart/>}/>
             </Route>
         </Routes>
-  
+        
         <LinkContainer>
         <Link to="/"> &larr; 홈화면으로 가기</Link>
-      </LinkContainer>
+        </LinkContainer>
 
         </BrowserRouter>
 

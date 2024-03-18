@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atom";
+
 
 const Container=styled.div`
     padding: 0px 20px;
@@ -21,10 +24,10 @@ const Header=styled.header`
 const CoinsList=styled.ul``;
 
 const Coin=styled.li`
-    background-color: white;
+    background-color: ${props=>props.theme.containColor};
     color:${props=>props.theme.bgColor};
     padding: 20px; 
-    border-radius: 15px;
+    border-radius: 15px; //1px black;
     margin-bottom:10px ;
     
     a{
@@ -68,7 +71,9 @@ interface ICoin{
     type: string,
 } 
 
-function Coins(){
+
+function Coins(){//토글 함수를 받아옴.
+    const setMode=useSetRecoilState(isDarkAtom);
 
     const {isLoading, data}=useQuery<ICoin[]>("coinsList",fetchCoins);
     return(
@@ -78,6 +83,7 @@ function Coins(){
             </Helmet>
             <Header> 
                 <Title>코인</Title>
+                <button onClick={()=> setMode(prev=>!prev)}>toggle mode</button>
             </Header>
             {isLoading?<LoadingBox>Loading...</LoadingBox>:<CoinsList>
                 {data?.slice(0,50).map((coin:ICoin)=>

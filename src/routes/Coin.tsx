@@ -6,6 +6,7 @@ import { fetchInfoData, fetchPriceData } from "../api";
 //import { useOutletContext } from "react-router-dom";
 import {Helmet} from "react-helmet";
 
+
 const Container=styled.div`
     padding: 0px 20px;
     max-width: 480px;
@@ -114,9 +115,7 @@ interface IPriceData{
         price:number
         volume_24h:number
         volume_24h_change_24h:number
-
     };
-
 }
 }
 
@@ -145,40 +144,18 @@ const Tab = styled.span<{ isActive: boolean }>`
 
 function Coin(){
     const {coinId}=useParams<string>();
+
     const location=useLocation();//이렇게 해서 Coins에서 주는 정보를 받은거임
-    //const name =location.state as IState//이러면 상태를 받는다
-    //console.log(name);
-    //console.log(location);
+
     const priceMatch = useMatch("/:coinId/price"); 
     const chartMatch = useMatch("/:coinId/chart");
-
-    // const[info,setInfo]=useState<IInfoData>();
-    // const[priceInfo,setPriceInfo]=useState<IPriceData>();
-
-    /*useEffect(()=>{
-        (async()=>{
-        //const infoData=await fetch( `https://ohlcv-api.nomadcoders.workers.dev?coinId=${coinId}`);
-        const infoData=await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`);
-        const info_json=await infoData.json();
-        setInfo(info_json);
-        
-
-        const priceData=await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`);
-        const price_json=await priceData.json();
-        setPriceInfo(price_json);//가격정보
-       // console.log(price_json);
-        setLoading(false);
-        
-            })();
-        },[coinId]);*/
-   // console.log(location.state);
 
     const{isLoading:infoLoading,data:infoData}=useQuery<IInfoData>(["info",coinId],()=>fetchInfoData(coinId!));
     const{isLoading:priceLoading,data:priceData}=useQuery<IPriceData>(["price",coinId],()=>fetchPriceData(coinId!),
     {
         //refetchInterval:5000,//새로고침마다 refresh되기 위해 refetch함
     });
-
+    console.log(priceData);
     const loading=infoLoading||priceLoading;
     return(
         <Container>
@@ -233,3 +210,4 @@ function Coin(){
             );
 }
 export default Coin;
+

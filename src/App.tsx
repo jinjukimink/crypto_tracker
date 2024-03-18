@@ -5,7 +5,9 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 //import { useNavigate } from "react-router-dom";
 import {ThemeProvider} from "styled-components";
 import { lightTheme,darkTheme } from './theme';
-import { useState } from "react";
+import { isDarkAtom } from "./atom";
+//import { useState } from "react";
+import { useRecoilValue } from "recoil";
 
 const GlobalStyle = createGlobalStyle`//글꼴
   @import url('https://fonts.googleapis.com/css2?family=Madimi+One&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nanum+Gothic&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
@@ -84,23 +86,22 @@ const BtnContainer=styled.div`
   display: fixed;
 `
 function App() {
-  const [isDarkMode,setIsDarkMode]=useState(true);
-
+  /*const [isDarkMode,setIsDarkMode]=useState(true);
   const toggle=()=>{
     setIsDarkMode(prev=>!prev);
-  }
+  } 리코일 쓸 거 니깐 이젠 필요 없어음*/
+  const isDark = useRecoilValue(isDarkAtom);//isDark 상태 연결 
 
   return (
     <>
-    <ThemeProvider theme={isDarkMode?lightTheme:darkTheme}>
+    <ThemeProvider theme={isDark?darkTheme:lightTheme}>
     <GlobalStyle/>
-          <BtnContainer>
-          <button onClick={toggle}>{isDarkMode?"turn to light mode":"turn to dark mode"}</button>
+          <BtnContainer> 
+          {/* <button onClick={toggle}>{isDarkMode?"turn to light mode":"turn to dark mode"}</button> */}
           </BtnContainer>
       <Router/>
-
     <ReactQueryDevtools/>
-    </ThemeProvider>
+    </ThemeProvider> 
       </>
   );
 }
